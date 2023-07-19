@@ -13,8 +13,12 @@
             <li class="list-group-item">{{ post.body }}</li>
           </ul>
           <div class="card-footer">
-            <button class="btn btn-small btn-danger me-4">Delete</button>
-            <button class="btn btn-small btn-dark">Edit</button>
+            <button @click="deletePost" class="btn btn-small btn-danger me-4">Delete</button>
+            <router-link
+              :to="{ name: 'editPost', params: { id: post.id } }"
+              class="btn btn-small btn-dark"
+              >Edit</router-link
+            >
           </div>
         </div>
       </div>
@@ -27,6 +31,8 @@ import axios from 'axios'
 import { ref } from 'vue'
 import PostView from '../../components/user/PostView.vue'
 import { useRoute } from 'vue-router'
+import EditPost from './EditPost.vue'
+import Swal from 'sweetalert2'
 
 export default {
   components: {
@@ -37,7 +43,7 @@ export default {
     const post = ref({})
     const loading = ref(true)
     const route = useRoute()
-    function getUser() {
+    function getPost() {
       axios
         .get(`https://jsonplaceholder.typicode.com/posts/${route.params.id}`)
         .then(function (response) {
@@ -53,11 +59,34 @@ export default {
           // always executed
         })
     }
-    getUser()
+    getPost()
+
+    function deletePost() {
+      axios
+        .delete(`https://jsonplaceholder.typicode.com/posts/${route.params.id}`)
+        .then(function () {
+          // handle success
+          Swal.fire({
+            title: 'Thanks!',
+            text: 'Post Deleted',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          })
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error)
+        })
+        .finally(function () {
+          // always executed
+        })
+    }
 
     return {
       post,
-      loading
+      loading,
+      route,
+      deletePost
     }
   }
 }

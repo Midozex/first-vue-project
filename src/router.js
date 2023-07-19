@@ -9,18 +9,30 @@ import TemplatePost from './pages/Posts/TemplatePost.vue'
 import IndexPost from './pages/Posts/IndexPost.vue'
 import ShowPost from './pages/Posts/ShowPost.vue'
 import CreatePost from './pages/Posts/CreatePost.vue'
+import EditPost from './pages/Posts/EditPost.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
-  { path: '/users', name: 'usersTemplate', component: TemplateUsers, children: [
+  {
+    path: '/users',
+    name: 'usersTemplate',
+    component: TemplateUsers,
+    children: [
       { path: '', name: 'users', component: IndexUser },
       { path: ':id', name: 'userId', component: ShowUser }
-    ] },
-    { path: '/posts', name: 'postTemplate', component: TemplatePost, children: [
+    ]
+  },
+  {
+    path: '/posts',
+    name: 'postTemplate',
+    component: TemplatePost,
+    children: [
       { path: '', name: 'posts', component: IndexPost },
       { path: ':id', name: 'postId', component: ShowPost },
-      { path: 'create', name: 'createPost', component: CreatePost }
-    ] }
+      { path: 'create', name: 'createPost', component: CreatePost },
+      { path: 'edit/:id', name: 'editPost', component: EditPost }
+    ]
+  }
 ]
 
 const router = createRouter({
